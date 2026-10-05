@@ -2,7 +2,9 @@ name: Build iOS App
 
 on:
 push:
-branches: ["main", "master"]
+branches:
+- main
+- master
 workflow_dispatch:
 
 jobs:
@@ -11,29 +13,26 @@ runs-on: macos-latest
 
 steps:
 - name: Checkout repository
-uses: actions/checkout@v4
+  uses: actions/checkout@v4
 
 - name: Show Xcode version
-run: xcodebuild -version
+  run: xcodebuild -version
 
 - name: Build iOS App
-run: |
-xcodebuild \
--project GolfSim.xcodeproj \
--scheme GolfSim \
--sdk iphoneos \
--configuration Release \
--derivedDataPath build \
-CODE_SIGN_IDENTITY="" \
-CODE_SIGNING_REQUIRED=NO \
-CODE_SIGNING_ALLOWED=NO \
-build
+  run: xcodebuild -project GolfSim.xcodeproj -scheme GolfSim -sdk iphoneos -configuration Release -derivedDataPath build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO build
 
 - name: Package IPA
 run: |
 mkdir -p Payload
-cp -R build/Build/Products/Release-iphoneos/GolfSim.app Payload/
+cp -R build/Build/Products/Release-iphoneos/GolfSim.app Payload/GolfSim.app
 zip -r GolfSim-unsigned.ipa Payload
+rm -rf Payload
+
+- name: Upload IPA Artifact
+uses: actions/upload-artifact@v4
+with:
+name: GolfSim-unsigned-ipa
+path: GolfSim-unsigned.ipa
 
 - name: Upload IPA Artifact
 uses: actions/upload-artifact@v4
