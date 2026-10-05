@@ -32,10 +32,4 @@ rm -rf Payload
 uses: actions/upload-artifact@v4
 with:
 name: GolfSim-unsigned-ipa
-path: GolfSim-unsigned.ipa
-
-- name: Upload IPA Artifact
-uses: actions/upload-artifact@v4
-with:
-name: GolfSim-unsigned-ipa
-path: GolfSim-unsigned.ipa
+path: ./GolfSim-unsigned.ipa
